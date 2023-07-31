@@ -1,50 +1,50 @@
-const { body, check, validationResult } = require('express-validator');
-const models = require('../models/index');
+const { body, check, validationResult } = require("express-validator");
+const models = require("../models/index");
 /***************************************************************************
  *********** Common validations for all api requests starts here ***********
  ***************************************************************************/
 
 // Common validations
-let email = check('email')
+let email = check("email")
   .notEmpty()
   .withMessage((value, { req }) => {
-    return 'Email is required.';
+    return "Email is required.";
   })
   .isEmail()
   .withMessage((value, { req }) => {
-    return 'Invalid email address.';
+    return "Invalid email address.";
   })
   .trim()
   .normalizeEmail()
   .custom((value, { req }) => {
     return models.User.findOne({ where: { email: value } }).then((user) => {
       if (user) {
-        throw new Error('Email is already registered.');
+        throw new Error("Email is already registered.");
       }
       return true;
     });
   });
-let password = check('password')
+let password = check("password")
   .notEmpty()
   .withMessage((value, { req }) => {
-    return 'Password is required';
+    return "Password is required";
   })
   .isLength({ min: 8 })
   .withMessage((value, { req }) => {
-    return 'Password length must be minimum 8 characters.';
+    return "Password length must be minimum 8 characters.";
   })
   .matches(/\d/)
   .withMessage((value, { req }) => {
-    return 'Password must contain 1 number.';
+    return "Password must contain 1 number.";
   });
-let confirmPassword = check('confirmPassword')
+let confirmPassword = check("confirmPassword")
     .notEmpty()
     .withMessage((value, { req }) => {
-      return 'Confirm password is missing.';
+      return "Confirm password is missing.";
     })
     .custom((value, { req }) => {
       if (value !== req.body.password) {
-        throw new Error('Password confirmation does not match password.');
+        throw new Error("Password confirmation does not match password.");
       }
       return true;
     }),
@@ -55,61 +55,58 @@ let confirmPassword = check('confirmPassword')
     email,
     password,
     confirmPassword,
-    check('firstName')
+    check("firstName")
       .notEmpty()
       .withMessage((value, { req }) => {
-        return 'First name is required.';
+        return "First name is required.";
       }),
-    check('lastName')
+    check("lastName")
       .notEmpty()
       .withMessage((value, { req }) => {
-        return 'Last name is required.';
+        return "Last name is required.";
       }),
-    check('city')
+    check("city")
       .notEmpty()
       .withMessage((value, { req }) => {
-        return 'City is required.';
+        return "City is required.";
       }),
-    check('province')
+    check("province")
       .notEmpty()
       .withMessage((value, { req }) => {
-        return 'Province field is required.';
+        return "Province field is required.";
       }),
-    check('userType')
+    check("userType")
       .notEmpty()
       .withMessage((value, { req }) => {
-        return 'User type is required.';
+        return "User type is required.";
       }),
   ];
 
 loginValidation = [
-  check('email')
+  check("email")
     .notEmpty()
     .withMessage((value, { req }) => {
-      return 'Email is required.';
+      return "Email is required.";
     })
     .isEmail()
     .withMessage((value, { req }) => {
-      return 'Invalid email addredd.';
+      return "Invalid email addredd.";
     })
     .trim()
     .normalizeEmail()
     .custom((value, { req }) => {
       return models.User.findOne({ where: { email: value } }).then((user) => {
         if (!user) {
-          throw new Error('This email does not belong to any account.');
+          throw new Error("This email does not belong to any account.");
         }
         return true;
       });
     }),
-  check('password')
+  check("password")
     .notEmpty()
     .withMessage((value, { req }) => {
-      return 'Password is missing.';
+      return "Password is missing.";
     }),
 ];
 
-module.exports = {
-  registrationValidation,
-  loginValidation,
-};
+module.exports = [registrationValidation, loginValidation];
