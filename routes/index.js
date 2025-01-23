@@ -1,6 +1,6 @@
-const express = require('express');
+import express from 'express';
+import authRouter from './users';
 const router = express.Router();
-const authRouter = require('./users');
 
 /* GET default server response. */
 router.get('/', function (req, res) {
@@ -14,4 +14,4 @@ router.get('/', function (req, res) {
 
 router.use('/api/admin', authRouter); // Auth routes
 
-module.exports = router;
+export default router

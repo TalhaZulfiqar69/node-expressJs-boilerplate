@@ -1,5 +1,6 @@
-require('dotenv').config();
-const { Sequelize } = require('sequelize');
+import dotenv from 'dotenv';
+dotenv.config();
+import { Sequelize } from 'sequelize';
 
 let APP_VERSION = process.env.NODE_ENV || 'development';
 
@@ -39,4 +40,4 @@ try {
   console.error('Unable to connect to the database:', error);
 }
 
-module.exports = sequelize;
+export default sequelize;

@@ -1,11 +1,9 @@
-const express = require('express');
+import express from 'express';
+import loginValidation from '../middlewares/validation_middleware';
+import AuthController from '../controllers/auth.controller';
 const router = express.Router();
 
-const loginValidation = require('../helpers/validation_helper')
-
-module.exports = router;
-const AuthController = require("../controllers/auth.controller");
 
 router.get("/login", loginValidation, AuthController.login); // Admin Login api
 
-module.exports = router;
+export default router;
